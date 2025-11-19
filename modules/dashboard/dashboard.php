@@ -165,7 +165,7 @@ while ($row = $result->fetch_assoc()) {
         </div>
       <?php endforeach; ?>
       <?php if (empty($recent_employees)): ?>
-        <p class="text-gray-600 dark:text-gray-400">No recent employees found.</p>
+        <p class="text-secondary">No recent employees found.</p>
       <?php endif; ?>
     </div>
   </div>
@@ -187,7 +187,7 @@ while ($row = $result->fetch_assoc()) {
         </div>
       <?php endforeach; ?>
       <?php if (empty($recent_activities)): ?>
-        <p class="text-gray-600 dark:text-gray-400">No recent activities logged.</p>
+        <p class="text-secondary">No recent activities logged.</p>
       <?php endif; ?>
     </div>
   </div>

@@ -106,16 +106,24 @@ $full_title = escapeHtml(SYSTEM_NAME . ' - ' . $page_title);
     <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap Icons (keeping for icon support) -->
+    <!-- Bootstrap 5.3 CSS -->
     <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-        integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
         crossorigin="anonymous"
     >
 
-    <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/output.css">
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        integrity="sha384-XGjxtQfXaH2tnPFa9x+ruJTuLE3Aa6LhHSWRr1XeTyhezb4abCG4ccI5AkVDxqC+"
+        crossorigin="anonymous"
+    >
+
+    <!-- Custom Bootstrap Theme & Components -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/bootstrap-custom.css">
 
     <!-- PSGC Address Script (if needed on this page) -->
     <?php if (in_array($page, ['company', 'organizational_units', 'employees', 'minimum_wage_rates'])): ?>

@@ -1,22 +1,29 @@
 <!-- Footer -->
-<footer class="app-footer bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-8">
-    <div class="max-w-[1400px] mx-auto px-4 py-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 m-0">
+<footer class="app-footer mt-4">
+    <div class="container-fluid px-4 py-4">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                <p class="text-secondary small m-0">
                     &copy; <?= date('Y') ?> <?= escapeHtml(COMPANY_NAME) ?>. All rights reserved.
                 </p>
             </div>
-            <div class="text-left md:text-right">
-                <p class="text-sm text-gray-600 dark:text-gray-400 m-0">
-                    <?= escapeHtml(SYSTEM_NAME) ?> v2.1 |
-                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">Privacy Policy</a> |
-                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">Terms of Service</a>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="text-secondary small m-0">
+                    <?= escapeHtml(SYSTEM_NAME) ?> v3.0 |
+                    <a href="#" class="text-secondary">Privacy Policy</a> |
+                    <a href="#" class="text-secondary">Terms of Service</a>
                 </p>
             </div>
         </div>
     </div>
 </footer>
+
+<!-- Bootstrap 5.3 JS Bundle -->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+></script>
 
 <!-- Custom JS with defer for better performance -->
 <script src="<?= BASE_URL ?>/assets/js/app.js" defer></script>
@@ -33,41 +40,41 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!toastContainer) {
         toastContainer = document.createElement('div');
         toastContainer.id = 'toastContainer';
-        toastContainer.className = 'fixed top-4 right-4 z-[9999] space-y-2';
+        toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+        toastContainer.style.zIndex = '1090';
         document.body.appendChild(toastContainer);
     }
 
-    // Determine toast color
+    // Determine toast color based on type
     const type = '<?= $flash['type'] ?>';
-    let bgColor = 'bg-primary-600';
-    if (type === 'error' || type === 'danger') bgColor = 'bg-red-600';
-    else if (type === 'success') bgColor = 'bg-green-600';
-    else if (type === 'warning') bgColor = 'bg-yellow-600';
-    else if (type === 'info') bgColor = 'bg-blue-600';
+    let bgClass = 'bg-primary';
+    let textClass = 'text-white';
+    if (type === 'error' || type === 'danger') bgClass = 'bg-danger';
+    else if (type === 'success') bgClass = 'bg-success';
+    else if (type === 'warning') { bgClass = 'bg-warning'; textClass = 'text-dark'; }
+    else if (type === 'info') bgClass = 'bg-info';
 
-    // Create toast
+    // Create Bootstrap toast
     const toastHTML = `
-        <div class="flex items-center gap-3 ${bgColor} text-white px-4 py-3 rounded-lg shadow-lg max-w-md" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="flex-1">
-                <?= escapeHtml($flash['text']) ?>
+        <div class="toast align-items-center ${bgClass} ${textClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <?= escapeHtml($flash['text']) ?>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <button type="button" class="text-white hover:text-gray-200 text-xl" onclick="this.parentElement.remove()" aria-label="Close">
-                <i class="bi bi-x"></i>
-            </button>
         </div>
     `;
 
     toastContainer.insertAdjacentHTML('beforeend', toastHTML);
 
-    // Auto-hide after 5 seconds
+    // Initialize and show the toast
     const toastElement = toastContainer.lastElementChild;
-    setTimeout(function() {
-        toastElement.style.opacity = '0';
-        toastElement.style.transition = 'opacity 0.3s';
-        setTimeout(function() {
-            toastElement.remove();
-        }, 300);
-    }, 5000);
+    const toast = new bootstrap.Toast(toastElement, {
+        autohide: true,
+        delay: 5000
+    });
+    toast.show();
 });
 </script>
 <?php endif; ?>
