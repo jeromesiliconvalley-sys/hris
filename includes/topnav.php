@@ -85,13 +85,13 @@ $display_name = !empty($current_user['employee_name']) ? $current_user['employee
         <div class="dropdown-header">
           <h6>Notifications</h6>
           <?php if ($notification_count > 0): ?>
-          <a href="#" class="text-gray-600 dark:text-gray-400 text-sm" onclick="markAllNotificationsRead(event)">Mark all read</a>
+          <a href="#" class="text-secondary small" onclick="markAllNotificationsRead(event)">Mark all read</a>
           <?php endif; ?>
         </div>
         <div class="dropdown-body" id="notificationList">
           <div class="text-center py-3">
-            <div class="spinner text-primary-600" role="status">
-              <span class="sr-only">Loading...</span>
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
             </div>
           </div>
         </div>
@@ -119,12 +119,12 @@ $display_name = !empty($current_user['employee_name']) ? $current_user['employee
       <div class="dropdown-menu" id="messageDropdown" role="menu">
         <div class="dropdown-header">
           <h6>Messages</h6>
-          <a href="<?= BASE_URL ?>/index.php?page=memos&action=new" class="text-gray-600 dark:text-gray-400 text-sm">New</a>
+          <a href="<?= BASE_URL ?>/index.php?page=memos&action=new" class="text-secondary small">New</a>
         </div>
         <div class="dropdown-body" id="messageList">
           <div class="text-center py-3">
-            <div class="spinner text-primary-600" role="status">
-              <span class="sr-only">Loading...</span>
+            <div class="spinner-border spinner-border-sm text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
             </div>
           </div>
         </div>
@@ -145,7 +145,7 @@ $display_name = !empty($current_user['employee_name']) ? $current_user['employee
         <div class="user-avatar" aria-hidden="true"><?= escapeHtml($user_initials) ?></div>
         <div class="user-info">
           <div class="user-name"><?= escapeHtml($display_name) ?></div>
-          <div class="user-role text-gray-600 dark:text-gray-400 text-xs"><?= escapeHtml($current_user['role_name']) ?></div>
+          <div class="user-role"><?= escapeHtml($current_user['role_name']) ?></div>
         </div>
         <i class="bi bi-chevron-down" aria-hidden="true"></i>
       </button>
@@ -172,7 +172,7 @@ $display_name = !empty($current_user['employee_name']) ? $current_user['employee
         </a>
         <div class="dropdown-divider"></div>
         <a href="<?= BASE_URL ?>/modules/auth/logout.php"
-           class="dropdown-item text-red-600 dark:text-red-400"
+           class="dropdown-item text-danger"
            role="menuitem">
           <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
           <span>Logout</span>
@@ -274,10 +274,10 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success && data.notifications.length > 0) {
                     container.innerHTML = data.notifications.map(notif => `
-                        <a href="${notif.action_url || '#'}" 
+                        <a href="${notif.action_url || '#'}"
                            class="dropdown-item ${notif.is_read ? '' : 'unread'}"
                            onclick="markNotificationRead(event, ${notif.id})">
-                            <div class="notification-icon ${notif.priority === 'High' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' : notif.priority === 'Normal' ? 'bg-primary-100 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400' : 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400'}">
+                            <div class="notification-icon ${notif.priority === 'High' ? 'bg-danger' : notif.priority === 'Normal' ? 'bg-primary' : 'bg-success'}">
                                 <i class="bi bi-${notif.icon || 'info-circle'}"></i>
                             </div>
                             <div class="notification-content">
@@ -288,12 +288,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         </a>
                     `).join('');
                 } else {
-                    container.innerHTML = '<div class="text-center py-3 text-gray-600 dark:text-gray-400">No notifications</div>';
+                    container.innerHTML = '<div class="text-center py-3 text-secondary">No notifications</div>';
                 }
             })
             .catch(error => {
                 console.error('Error loading notifications:', error);
-                container.innerHTML = '<div class="text-center py-3 text-red-600 dark:text-red-400">Error loading notifications</div>';
+                container.innerHTML = '<div class="text-center py-3 text-danger">Error loading notifications</div>';
             });
     }
 
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success && data.messages.length > 0) {
                     container.innerHTML = data.messages.map(msg => `
-                        <a href="${window.HRIS.baseUrl}/index.php?page=memos&action=view&id=${msg.id}" 
+                        <a href="${window.HRIS.baseUrl}/index.php?page=memos&action=view&id=${msg.id}"
                            class="dropdown-item ${msg.viewed_at ? '' : 'unread'}">
                             <div class="message-avatar">${msg.sender_initials}</div>
                             <div class="notification-content">
@@ -317,12 +317,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         </a>
                     `).join('');
                 } else {
-                    container.innerHTML = '<div class="text-center py-3 text-gray-600 dark:text-gray-400">No messages</div>';
+                    container.innerHTML = '<div class="text-center py-3 text-secondary">No messages</div>';
                 }
             })
             .catch(error => {
                 console.error('Error loading messages:', error);
-                container.innerHTML = '<div class="text-center py-3 text-red-600 dark:text-red-400">Error loading messages</div>';
+                container.innerHTML = '<div class="text-center py-3 text-danger">Error loading messages</div>';
             });
     }
 

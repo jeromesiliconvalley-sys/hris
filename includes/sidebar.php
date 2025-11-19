@@ -46,7 +46,7 @@ function isMenuActive($menuPage, $currentPage, $menuAction = '', $currentAction 
       <i class="bi bi-people-fill" aria-hidden="true"></i>
       <span class="logo-text"><?= escapeHtml(SYSTEM_NAME) ?></span>
     </div>
-    <button class="toggle-btn hidden lg:flex" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+    <button class="toggle-btn d-none d-lg-flex" onclick="toggleSidebar()" aria-label="Toggle sidebar">
       <i class="bi bi-list" aria-hidden="true"></i>
     </button>
   </div>
@@ -467,9 +467,9 @@ function isMenuActive($menuPage, $currentPage, $menuAction = '', $currentAction 
     <?php endif; ?>
 
     <!-- Logout (Mobile/Tablet Only) -->
-    <li class="nav-item lg:hidden" role="none">
+    <li class="nav-item d-lg-none" role="none">
       <a href="<?= BASE_URL ?>/modules/auth/logout.php"
-         class="nav-link text-red-600 dark:text-red-400"
+         class="nav-link text-danger"
          role="menuitem">
         <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
         <span>Logout</span>
