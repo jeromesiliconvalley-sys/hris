@@ -120,12 +120,6 @@ $full_title = escapeHtml(SYSTEM_NAME . ' - ' . $page_title);
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
     >
 
-    <!-- Custom Bootstrap Theme & Components -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/bootstrap-custom.css">
-
-    <!-- Responsive Styles -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/responsive.css">
-
     <!-- PSGC Address Script (if needed on this page) -->
     <?php if (in_array($page, ['company', 'organizational_units', 'employees', 'minimum_wage_rates'])): ?>
     <script src="<?= BASE_URL ?>/assets/js/psgc-address.js"></script>
