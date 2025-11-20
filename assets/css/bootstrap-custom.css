@@ -494,10 +494,18 @@ body {
   box-shadow: var(--box-shadow);
 }
 
-/* Adjust topnav when sidebar is collapsed */
+/* Adjust topnav when sidebar is collapsed - use both approaches for compatibility */
 .sidebar.collapsed ~ .top-nav,
 body.sidebar-collapsed .top-nav {
   left: var(--sidebar-collapsed-width);
+}
+
+/* Also update main-content for collapsed sidebar */
+.sidebar.collapsed ~ .main-content,
+body.sidebar-collapsed .main-content,
+.sidebar.collapsed ~ #mainContent,
+body.sidebar-collapsed #mainContent {
+  margin-left: var(--sidebar-collapsed-width);
 }
 
 .mobile-menu-btn {

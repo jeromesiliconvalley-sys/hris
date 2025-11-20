@@ -478,6 +478,3 @@ function isMenuActive($menuPage, $currentPage, $menuAction = '', $currentAction 
 
   </ul>
 </aside>
-
-<!-- Sidebar Overlay for Mobile -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>

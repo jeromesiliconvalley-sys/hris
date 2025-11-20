@@ -274,10 +274,20 @@ body {
 .sidebar-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 1rem;
+  justify-content: center;
+  padding: 1rem 0.5rem;
   border-bottom: 1px solid var(--border-color);
   height: var(--topnav-height);
+  min-width: var(--sidebar-collapsed-width);
+  overflow: hidden;
+}
+
+/* When sidebar is expanded (on hover), show full header */
+@media (min-width: 992px) {
+  .sidebar:hover .sidebar-header {
+    justify-content: space-between;
+    padding: 1.25rem 1rem;
+  }
 }
 
 .sidebar .logo {
@@ -299,19 +309,33 @@ body {
 }
 
 .sidebar .toggle-btn {
-  background: none;
-  border: none;
+  background: var(--bg-gray);
+  border: 1px solid var(--border-color);
   color: var(--text-secondary);
-  font-size: 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
   padding: 0.5rem;
   border-radius: var(--border-radius);
   transition: var(--transition-fast);
+  width: 32px;
+  height: 32px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Show toggle button only when sidebar is hovered/expanded on desktop */
+@media (min-width: 992px) {
+  .sidebar:hover .toggle-btn {
+    display: flex;
+  }
 }
 
 .sidebar .toggle-btn:hover {
-  background: var(--bg-gray);
+  background: var(--primary-100);
   color: var(--primary-color);
+  border-color: var(--primary-200);
 }
 
 /* Navigation Menu */
@@ -2456,43 +2480,27 @@ body {
 /* ========================================
    SIDEBAR TOGGLE IMPROVEMENTS
    ======================================== */
-/* Make toggle button more visible when sidebar is collapsed */
-.sidebar.collapsed .toggle-btn {
-  position: fixed;
-  left: 10px;
-  top: 15px;
-  background: var(--primary-color);
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  z-index: var(--z-dropdown-menu);
-  transition: var(--transition-fast);
-}
+/* Toggle button is hidden by default, shown on hover for desktop */
+/* This provides a cleaner look when collapsed while maintaining functionality */
 
-.sidebar.collapsed .toggle-btn:hover {
-  background: var(--primary-dark);
-  transform: scale(1.1);
-}
-
-.sidebar.collapsed .toggle-btn i {
-  font-size: 1.5rem;
-}
-
-/* Ensure sidebar header toggle button is visible */
+/* Ensure sidebar header toggle button appearance */
 .sidebar-header .toggle-btn {
-  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Mobile - ensure button is always visible */
+/* For explicit collapsed state via JS toggle */
+.sidebar.collapsed .toggle-btn {
+  display: none;
+}
+
+.sidebar.collapsed:hover .toggle-btn {
+  display: flex;
+}
+
+/* Mobile - use hamburger menu instead */
 @media (max-width: 991.98px) {
-  .sidebar .toggle-btn.d-none.d-lg-flex {
+  .sidebar .toggle-btn {
     display: none !important;
   }
 
