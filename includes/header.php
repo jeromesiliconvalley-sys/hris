@@ -24,7 +24,7 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
 // Content Security Policy - adjust as needed for your site
 $csp = "default-src 'self'; ";
 $csp .= "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; ";
-$csp .= "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; ";
+$csp .= "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; ";
 $csp .= "font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; ";
 $csp .= "img-src 'self' data: https:; ";
 $csp .= "connect-src 'self' https://cdn.jsdelivr.net; ";  // Allow CDN for source maps
@@ -108,18 +108,16 @@ $full_title = escapeHtml(SYSTEM_NAME . ' - ' . $page_title);
 
     <!-- Bootstrap 5.3 CSS -->
     <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
         crossorigin="anonymous"
     >
 
     <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        integrity="sha384-XGjxtQfXaH2tnPFa9x+ruJTuLE3Aa6LhHSWRr1XeTyhezb4abCG4ccI5AkVDxqC+"
-        crossorigin="anonymous"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
     >
 
     <!-- Custom Bootstrap Theme & Components -->
