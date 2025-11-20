@@ -46,8 +46,8 @@ function isMenuActive($menuPage, $currentPage, $menuAction = '', $currentAction 
       <i class="bi bi-people-fill" aria-hidden="true"></i>
       <span class="logo-text"><?= escapeHtml(SYSTEM_NAME) ?></span>
     </div>
-    <button class="toggle-btn d-none d-lg-flex" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-      <i class="bi bi-list" aria-hidden="true"></i>
+    <button class="toggle-btn" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+      <i class="bi bi-chevron-left" aria-hidden="true"></i>
     </button>
   </div>
 
@@ -478,3 +478,6 @@ function isMenuActive($menuPage, $currentPage, $menuAction = '', $currentAction 
 
   </ul>
 </aside>
+
+<!-- Sidebar Overlay for Mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
