@@ -50,7 +50,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
         </div>
 
-        <main class="col-lg-10 ms-auto d-flex flex-column min-vh-100">
+        <main class="col-lg-10 offset-lg-2 d-flex flex-column min-vh-100">
             <?php include __DIR__ . '/includes/topnav.php'; ?>
 
             <div class="flex-grow-1 p-4 bg-light">
