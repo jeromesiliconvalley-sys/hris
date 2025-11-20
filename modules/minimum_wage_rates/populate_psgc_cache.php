@@ -378,7 +378,9 @@ echo "<hr><h2>Final Summary</h2>";
 echo "<table>";
 echo "<tr><th>Resource</th><th>Count</th><th>Status</th></tr>";
 echo "<tr><td>Regions</td><td><strong>{$stats['regions']}</strong></td><td class='" . ($stats['regions'] > 0 ? 'success' : 'error') . "'>" . ($stats['regions'] > 0 ? 'Success' : 'Failed') . "</td></tr>";
-echo "<tr><td>Provinces</td><td><strong>{$stats['provinces']}</strong></td><td class='" . ($stats['provinces'] > 0 ? 'success' : 'error') . "'>" . ($stats['provinces'] > 0 ? 'Success' : 'Failed') . "</td></tr>";
+echo "<tr><td>Provinces</td><td><strong>{$stats['provinces']}</strong></td>"
+    . "<td class='" . ($stats['provinces'] > 0 ? 'success' : 'error') . "'>"
+    . ($stats['provinces'] > 0 ? 'Success' : 'Failed') . "</td></tr>";
 echo "<tr><td>Cities/Municipalities</td><td><strong>{$stats['cities']}</strong></td><td class='" . ($stats['cities'] > 0 ? 'success' : 'error') . "'>" . ($stats['cities'] > 0 ? 'Success' : 'Failed') . "</td></tr>";
 echo "<tr><td>API Calls</td><td><strong>{$stats['api_calls']}</strong></td><td class='info'>Info</td></tr>";
 echo "<tr><td>Duration</td><td><strong>{$stats['duration']}s</strong></td><td class='info'>Info</td></tr>";
