@@ -34,32 +34,29 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container-fluid p-0">
-    <div class="row g-0">
+    <nav class="sidebar-fixed d-none d-lg-block bg-white border-end min-vh-100 position-fixed top-0 start-0" style="z-index: 1000;">
+        <?php include __DIR__ . '/includes/sidebar.php'; ?>
+    </nav>
 
-        <nav class="col-lg-2 d-none d-lg-block bg-white border-end min-vh-100 position-fixed top-0 start-0" style="z-index: 1000;">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarMenuLabel"><?= SYSTEM_NAME ?></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
             <?php include __DIR__ . '/includes/sidebar.php'; ?>
-        </nav>
+        </div>
+    </div>
 
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="sidebarMenuLabel"><?= SYSTEM_NAME ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body p-0">
-                <?php include __DIR__ . '/includes/sidebar.php'; ?>
-            </div>
+    <main class="main-content d-flex flex-column min-vh-100">
+        <?php include __DIR__ . '/includes/topnav.php'; ?>
+
+        <div class="flex-grow-1 p-4">
+            <?php include $page_path; ?>
         </div>
 
-        <main class="col-lg-10 offset-lg-2 d-flex flex-column min-vh-100">
-            <?php include __DIR__ . '/includes/topnav.php'; ?>
-
-            <div class="flex-grow-1 p-4 bg-light">
-                <?php include $page_path; ?>
-            </div>
-
-            <?php include __DIR__ . '/includes/footer.php'; ?>
-        </main>
-    </div>
+        <?php include __DIR__ . '/includes/footer.php'; ?>
+    </main>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
