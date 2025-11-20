@@ -162,7 +162,7 @@ if ($check_result->num_rows > 0) {
     ");
 
     $stmt->bind_param(
-        "issddssisii",
+        "issddsissii",
         $employee_id, $today, $current_time, $latitude, $longitude, $selfie_path,
         $face_verified, $device_info, $ip_address, $user_id, $user_id
     );
