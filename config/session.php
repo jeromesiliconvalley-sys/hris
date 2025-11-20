@@ -691,10 +691,22 @@ function hasPermission($module, $action) {
         $stmt->close();
 
         // Return true if the permission column is set to 1
-        return isset($row[$column]) && $row[$column] == 1;
+        if (isset($row[$column])) {
+            return $row[$column] == 1;
+        }
+
+        // No permission row found - log for debugging
+        if (ENABLE_QUERY_LOG) {
+            error_log("No permission found for role_id=$role_id, module=$module, action=$action");
+        }
+
+        return false;
     }
 
     // If query fails, deny permission for security
+    if (ENABLE_QUERY_LOG) {
+        error_log("Permission query failed for module=$module, action=$action");
+    }
     return false;
 }
 

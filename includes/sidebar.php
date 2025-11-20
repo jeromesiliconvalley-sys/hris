@@ -1,6 +1,10 @@
 <?php
 // includes/sidebar.php
 
+// Ensure variables are available
+$page = $page ?? 'dashboard';
+$action = $action ?? '';
+
 // Helper to check active state
 function isMenuActive($menuPage, $currentPage) {
     return (strpos($currentPage, $menuPage) === 0) ? 'active' : 'link-dark';
@@ -12,6 +16,16 @@ function isExpanded($menuPage, $currentPage) {
 
 function getToggleState($menuPage, $currentPage) {
     return (strpos($currentPage, $menuPage) === 0) ? 'true' : 'false';
+}
+
+// Helper function to check if user can view module (with fallback)
+function canViewModule($module) {
+    // Use existing canView if available, otherwise return true for admin
+    if (function_exists('canView')) {
+        return canView($module);
+    }
+    // Fallback: allow if user is logged in
+    return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 }
 ?>
 
