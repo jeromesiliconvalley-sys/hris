@@ -699,6 +699,16 @@ function hasPermission($module, $action) {
 }
 
 /**
+ * Convenience wrapper to check view permission
+ *
+ * @param string $module
+ * @return bool
+ */
+function canView($module) {
+    return hasPermission($module, 'view');
+}
+
+/**
  * Set Flash Message
  *
  * Stores a message in the session to be displayed on the next page load.
