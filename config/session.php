@@ -14,7 +14,7 @@
  * Security Features:
  * - HttpOnly cookies (prevents JavaScript access to session cookies)
  * - Secure cookies for HTTPS connections
- * - SameSite=Strict (prevents CSRF attacks)
+ * - SameSite=Lax (mitigates CSRF while allowing top-level navigation)
  * - Session regeneration (prevents session fixation attacks)
  * - User Agent fingerprinting (detects session hijacking)
  * - Inactivity timeout (automatic logout after idle period)
@@ -41,9 +41,9 @@ ini_set('session.cookie_httponly', '1');
 // Use only cookies: Prevents session ID from being passed in URLs
 ini_set('session.use_only_cookies', '1');
 
-// SameSite: Prevents CSRF attacks by restricting cross-site cookie sending
+// SameSite: Mitigates CSRF while still permitting top-level navigations (Lax keeps logins working)
 // Options: 'Strict', 'Lax', or 'None'
-ini_set('session.cookie_samesite', 'Strict');
+ini_set('session.cookie_samesite', 'Lax');
 
 // Secure cookies: Only send cookies over HTTPS (if site uses HTTPS)
 if (defined('BASE_URL') && strpos(BASE_URL, 'https://') === 0) {
@@ -71,7 +71,7 @@ session_set_cookie_params([
     'domain' => '',  // Empty = current domain
     'secure' => $is_secure,  // HTTPS only if BASE_URL uses HTTPS
     'httponly' => true,  // Prevent JavaScript access
-    'samesite' => 'Lax'  // CSRF protection
+    'samesite' => 'Lax'  // CSRF protection while allowing top-level cross-site redirects (Strict would block these)
 ]);
 
 /**
