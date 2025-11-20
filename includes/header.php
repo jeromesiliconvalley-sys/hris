@@ -39,9 +39,54 @@ $full_title = htmlspecialchars(SYSTEM_NAME . ' - ' . $page_title);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Minimal utility to ensure full height layout */
-        body { font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-        .sidebar-nav .nav-link.active { background-color: #0d6efd; color: white; }
+        :root {
+            --sidebar-width: 260px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        @media (min-width: 992px) {
+            .sidebar-fixed {
+                width: var(--sidebar-width);
+            }
+
+            .main-content {
+                margin-left: var(--sidebar-width);
+            }
+        }
+
+        .sidebar-nav .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        /* Consistent page header layout across modules */
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--bs-border-color);
+        }
+
+        .page-title {
+            margin: 0;
+            font-weight: 700;
+            font-size: clamp(1.5rem, 2vw, 1.75rem);
+        }
+
+        .page-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
         /* Ensure chart canvas responsiveness */
         canvas { max-width: 100%; }
     </style>
