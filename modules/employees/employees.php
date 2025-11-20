@@ -769,94 +769,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <?php elseif ($action === 'add' || $action === 'edit'): ?>
 
 <!-- Add/Edit Form -->
-<style>
-/* Tab Styling - Make ALL tabs clearly visible */
-.nav-tabs .nav-link {
-    font-weight: 500;
-    color: #495057 !important;
-    background-color: #e9ecef;
-    border: 1px solid #dee2e6;
-    margin-right: 2px;
-    opacity: 1 !important;
-}
-
-.nav-tabs .nav-link:hover {
-    background-color: #dee2e6;
-    color: #000 !important;
-}
-
-.nav-tabs .nav-link.active {
-    font-weight: 600;
-    color: #0d6efd !important;
-    background-color: #fff;
-    border-bottom-color: #fff;
-}
-
-/* Form Styling */
-.form-label {
-    font-weight: 600;
-    font-size: 0.85rem;
-    margin-bottom: 0.3rem;
-    color: #212529;
-}
-
-.form-control, .form-select {
-    font-size: 0.95rem;
-}
-
-small.text-muted {
-    font-size: 0.75rem;
-    display: block;
-    margin-top: 0.2rem;
-}
-
-.tab-content {
-    padding: 1.5rem;
-    border: 1px solid #dee2e6;
-    border-top: none;
-    background-color: #fff;
-}
-
-h5 {
-    color: #0d6efd;
-    font-weight: 600;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-hr {
-    margin: 1.5rem 0;
-}
-
-/* Birthplace autocomplete dropdown */
-#birthplace-dropdown {
-    position: absolute;
-    z-index: 1000;
-    background: white;
-    border: 1px solid #ced4da;
-    border-radius: 0.375rem;
-    max-height: 200px;
-    overflow-y: auto;
-    width: 100%;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    display: none;
-}
-
-#birthplace-dropdown .dropdown-item {
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-#birthplace-dropdown .dropdown-item:hover {
-    background-color: #f8f9fa;
-}
-
-#birthplace-dropdown .dropdown-item:last-child {
-    border-bottom: none;
-}
-</style>
-
 <div class="card">
     <div class="card-body">
         <form method="POST" action="index.php?page=employees" id="employeeForm">
@@ -995,13 +907,13 @@ hr {
                         </div>
 
                         <!-- Row 3: Birthplace, Nationality, Religion -->
-                        <div class="col-lg-6 col-md-6" style="position: relative;">
+                        <div class="col-lg-6 col-md-6">
                             <label for="birthplace" class="form-label">BIRTHPLACE</label>
-                            <input type="text" class="form-control" id="birthplace" name="birthplace"
-                                   autocomplete="off"
-                                   value="<?= escapeHtml($employee['birthplace'] ?? '') ?>"
-                                   placeholder="Start typing city/municipality...">
-                            <div id="birthplace-dropdown"></div>
+                            <input class="form-control" list="birthplaceOptions" id="birthplace" name="birthplace"
+                                   placeholder="Type to search..."
+                                   value="<?= escapeHtml($employee['birthplace'] ?? '') ?>">
+                            <datalist id="birthplaceOptions">
+                            </datalist>
                             <small class="text-muted">Type 3+ characters to search Philippine cities/municipalities</small>
                         </div>
 
@@ -1790,66 +1702,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ==================== BIRTHPLACE AUTOCOMPLETE ====================
 
-// Birthplace autocomplete using PSGC search with custom dropdown
-let birthplaceTimeout;
+// Simplified Birthplace Autocomplete using HTML5 Datalist (No custom CSS required)
 const birthplaceInput = document.getElementById('birthplace');
-const birthplaceDropdown = document.getElementById('birthplace-dropdown');
+const birthplaceList = document.getElementById('birthplaceOptions');
+let debounceTimer;
 
-if (birthplaceInput && birthplaceDropdown) {
+if (birthplaceInput) {
     birthplaceInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.trim();
+        const term = e.target.value;
+        if (term.length < 3) return;
 
-        if (searchTerm.length < 3) {
-            birthplaceDropdown.style.display = 'none';
-            birthplaceDropdown.innerHTML = '';
-            return;
-        }
-
-        // Debounce the API call
-        clearTimeout(birthplaceTimeout);
-        birthplaceTimeout = setTimeout(() => {
-            fetch(`<?= BASE_URL ?>/api/psgc-api.php?action=search&query=${encodeURIComponent(searchTerm)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success && data.data) {
-                        // Filter to only show cities/municipalities
-                        const cities = data.data.filter(item =>
-                            item.type === 'city' || item.type === 'municipality'
-                        ).slice(0, 10);
-
-                        if (cities.length > 0) {
-                            birthplaceDropdown.innerHTML = cities
-                                .map(city => `<div class="dropdown-item" data-value="${city.name}">${city.name}</div>`)
-                                .join('');
-                            birthplaceDropdown.style.display = 'block';
-                        } else {
-                            birthplaceDropdown.innerHTML = '<div class="dropdown-item" style="color: #6c757d;">No cities found</div>';
-                            birthplaceDropdown.style.display = 'block';
-                        }
-                    } else {
-                        birthplaceDropdown.style.display = 'none';
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetch(`<?= BASE_URL ?>/api/psgc-api.php?action=search&query=${encodeURIComponent(term)}`)
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success && res.data) {
+                        birthplaceList.innerHTML = res.data
+                            .filter(item => item.type === 'city' || item.type === 'municipality')
+                            .map(item => `<option value="${item.name}">`)
+                            .join('');
                     }
-                })
-                .catch(error => {
-                    console.error('Birthplace search error:', error);
-                    birthplaceDropdown.style.display = 'none';
                 });
-        }, 300); // Wait 300ms after user stops typing
-    });
-
-    // Handle dropdown item click
-    birthplaceDropdown.addEventListener('click', function(e) {
-        if (e.target.classList.contains('dropdown-item') && e.target.dataset.value) {
-            birthplaceInput.value = e.target.dataset.value;
-            birthplaceDropdown.style.display = 'none';
-        }
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
-        if (e.target !== birthplaceInput && e.target !== birthplaceDropdown) {
-            birthplaceDropdown.style.display = 'none';
-        }
+        }, 300);
     });
 }
 
