@@ -95,9 +95,29 @@ define('DB_COLLATION', $env['DB_COLLATION'] ?? 'utf8mb4_unicode_ci');
  * General system settings including branding and URL configuration.
  */
 
+// Detect BASE_URL from the current request as a resilient fallback for misconfigured environments
+$detected_base_url = '';
+if (!empty($_SERVER['HTTP_HOST'])) {
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $path = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/\\');
+    $detected_base_url = rtrim($scheme . '://' . $_SERVER['HTTP_HOST'] . ($path === '.' ? '' : $path), '/');
+}
+
+$env_base_url = rtrim($env['BASE_URL'] ?? '', '/');
+
+// Prefer the .env BASE_URL when it matches the current host; otherwise fall back to the detected URL
+if ($env_base_url && !empty($_SERVER['HTTP_HOST'])) {
+    $env_host = parse_url($env_base_url, PHP_URL_HOST);
+    if ($env_host && strcasecmp($env_host, $_SERVER['HTTP_HOST']) !== 0 && $detected_base_url) {
+        $env_base_url = $detected_base_url;
+    }
+} elseif (!$env_base_url && $detected_base_url) {
+    $env_base_url = $detected_base_url;
+}
+
 define('SYSTEM_NAME', $env['SYSTEM_NAME'] ?? 'HRIS Pro');
 define('COMPANY_NAME', $env['COMPANY_NAME'] ?? 'Your Company');
-define('BASE_URL', rtrim($env['BASE_URL'] ?? '', '/'));
+define('BASE_URL', $env_base_url);
 define('TIMEZONE', $env['TIMEZONE'] ?? 'Asia/Manila');
 
 /**
