@@ -1,21 +1,27 @@
 <?php
-// Helper function for active state
+// includes/sidebar.php
+
+// Helper to check active state
 function isMenuActive($menuPage, $currentPage) {
-    return (strpos($currentPage, $menuPage) === 0) ? 'active' : 'text-dark';
+    return (strpos($currentPage, $menuPage) === 0) ? 'active' : 'link-dark';
 }
 
-// Helper to check permissions (simplified wrapper)
-function canView($module) {
-    return isset($_SESSION['role_id']) && ($_SESSION['role_id'] == 1 || hasPermission($module, 'view'));
+function isExpanded($menuPage, $currentPage) {
+    return (strpos($currentPage, $menuPage) === 0) ? 'show' : '';
+}
+
+function getToggleState($menuPage, $currentPage) {
+    return (strpos($currentPage, $menuPage) === 0) ? 'true' : 'false';
 }
 ?>
 
-<div class="d-flex flex-column flex-shrink-0 p-3 bg-white h-100 shadow-sm">
-    <a href="<?= BASE_URL ?>" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none text-primary">
-        <i class="bi bi-people-fill fs-4 me-2"></i>
-        <span class="fs-4 fw-bold text-truncate"><?= htmlspecialchars(SYSTEM_NAME) ?></span>
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-white h-100 border-end">
+    <a href="<?= BASE_URL ?>" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <i class="bi bi-people-fill fs-4 me-2 text-primary"></i>
+        <span class="fs-4 fw-bold"><?= htmlspecialchars(SYSTEM_NAME) ?></span>
     </a>
     <hr>
+
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
             <a href="<?= BASE_URL ?>/index.php?page=dashboard" class="nav-link <?= isMenuActive('dashboard', $page) ?>" aria-current="page">
@@ -35,69 +41,45 @@ function canView($module) {
 
         <?php if (canView('employees')): ?>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/index.php?page=employees" class="nav-link <?= isMenuActive('employees', $page) ?>">
-                <i class="bi bi-people me-2"></i>
-                Employees
+            <a href="#" class="nav-link d-flex justify-content-between align-items-center <?= isMenuActive('employees', $page) ?>"
+               data-bs-toggle="collapse"
+               data-bs-target="#employees-collapse"
+               aria-expanded="<?= getToggleState('employees', $page) ?>">
+                <span><i class="bi bi-people me-2"></i> Employees</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
+            <div class="collapse <?= isExpanded('employees', $page) ?>" id="employees-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-4 mt-1">
+                    <li><a href="<?= BASE_URL ?>/index.php?page=employees&action=list" class="nav-link py-1 <?= isMenuActive('employees/list', $page . '/' . $action) ?>">All Employees</a></li>
+                    <?php if (hasPermission('employees', 'create')): ?>
+                    <li><a href="<?= BASE_URL ?>/index.php?page=employees&action=add" class="nav-link py-1 <?= isMenuActive('employees/add', $page . '/' . $action) ?>">Add Employee</a></li>
+                    <?php endif; ?>
+                    <li><a href="<?= BASE_URL ?>/index.php?page=employees&action=chart" class="nav-link py-1 <?= isMenuActive('employees/chart', $page . '/' . $action) ?>">Org Chart</a></li>
+                </ul>
+            </div>
         </li>
         <?php endif; ?>
 
         <?php if (canView('attendance')): ?>
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/index.php?page=attendance/clock" class="nav-link <?= isMenuActive('attendance', $page) ?>">
-                <i class="bi bi-clock me-2"></i>
-                Attendance
+            <a href="#" class="nav-link d-flex justify-content-between align-items-center <?= isMenuActive('attendance', $page) ?>"
+               data-bs-toggle="collapse"
+               data-bs-target="#attendance-collapse"
+               aria-expanded="<?= getToggleState('attendance', $page) ?>">
+                <span><i class="bi bi-clock me-2"></i> Attendance</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
-        </li>
-        <?php endif; ?>
-
-        <?php if (canView('leave')): ?>
-        <li class="nav-item">
-            <a href="<?= BASE_URL ?>/index.php?page=leave" class="nav-link <?= isMenuActive('leave', $page) ?>">
-                <i class="bi bi-calendar-check me-2"></i>
-                Leave
-            </a>
-        </li>
-        <?php endif; ?>
-
-        <?php if (canView('payroll')): ?>
-        <li class="nav-item">
-            <a href="<?= BASE_URL ?>/index.php?page=payroll" class="nav-link <?= isMenuActive('payroll', $page) ?>">
-                <i class="bi bi-cash-stack me-2"></i>
-                Payroll
-            </a>
-        </li>
-        <?php endif; ?>
-
-        <?php if (canView('organizational_units')): ?>
-        <li class="nav-item">
-            <a href="<?= BASE_URL ?>/index.php?page=organizational_units" class="nav-link <?= isMenuActive('organizational_units', $page) ?>">
-                <i class="bi bi-diagram-3 me-2"></i>
-                Org Units
-            </a>
-        </li>
-        <?php endif; ?>
-
-        <?php if (canView('positions')): ?>
-        <li class="nav-item">
-            <a href="<?= BASE_URL ?>/index.php?page=positions" class="nav-link <?= isMenuActive('positions', $page) ?>">
-                <i class="bi bi-briefcase me-2"></i>
-                Positions
-            </a>
-        </li>
-        <?php endif; ?>
-
-        <?php if (canView('minimum_wage_rates')): ?>
-        <li class="nav-item">
-            <a href="<?= BASE_URL ?>/index.php?page=minimum_wage_rates" class="nav-link <?= isMenuActive('minimum_wage_rates', $page) ?>">
-                <i class="bi bi-cash-coin me-2"></i>
-                Wage Rates
-            </a>
+            <div class="collapse <?= isExpanded('attendance', $page) ?>" id="attendance-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-4 mt-1">
+                    <li><a href="<?= BASE_URL ?>/index.php?page=attendance/clock" class="nav-link py-1 <?= isMenuActive('attendance/clock', $page) ?>">Clock In/Out</a></li>
+                    <li><a href="<?= BASE_URL ?>/index.php?page=attendance/history" class="nav-link py-1 <?= isMenuActive('attendance/history', $page) ?>">My History</a></li>
+                </ul>
+            </div>
         </li>
         <?php endif; ?>
 
         <li class="nav-item mt-3">
-            <div class="text-uppercase fw-bold text-muted small px-3 mb-1">Settings</div>
+            <span class="text-uppercase text-muted fw-bold small px-3">System</span>
         </li>
 
         <?php if (canView('settings') || canView('users')): ?>
@@ -110,7 +92,7 @@ function canView($module) {
         <?php endif; ?>
 
         <li class="nav-item">
-            <a href="<?= BASE_URL ?>/modules/auth/logout.php" class="nav-link text-danger">
+            <a href="<?= BASE_URL ?>/modules/auth/logout.php" class="nav-link link-danger">
                 <i class="bi bi-box-arrow-right me-2"></i>
                 Logout
             </a>
