@@ -5,27 +5,35 @@
 $page = $page ?? 'dashboard';
 $action = $action ?? '';
 
-// Helper to check active state
-function isMenuActive($menuPage, $currentPage) {
-    return (strpos($currentPage, $menuPage) === 0) ? 'active' : 'link-dark';
-}
-
-function isExpanded($menuPage, $currentPage) {
-    return (strpos($currentPage, $menuPage) === 0) ? 'show' : '';
-}
-
-function getToggleState($menuPage, $currentPage) {
-    return (strpos($currentPage, $menuPage) === 0) ? 'true' : 'false';
-}
-
-// Helper function to check if user can view module (with fallback)
-function canViewModule($module) {
-    // Use existing canView if available, otherwise return true for admin
-    if (function_exists('canView')) {
-        return canView($module);
+// Helper functions - only define if not already defined (sidebar is included twice)
+if (!function_exists('isMenuActive')) {
+    function isMenuActive($menuPage, $currentPage) {
+        return (strpos($currentPage, $menuPage) === 0) ? 'active' : 'link-dark';
     }
-    // Fallback: allow if user is logged in
-    return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+}
+
+if (!function_exists('isExpanded')) {
+    function isExpanded($menuPage, $currentPage) {
+        return (strpos($currentPage, $menuPage) === 0) ? 'show' : '';
+    }
+}
+
+if (!function_exists('getToggleState')) {
+    function getToggleState($menuPage, $currentPage) {
+        return (strpos($currentPage, $menuPage) === 0) ? 'true' : 'false';
+    }
+}
+
+if (!function_exists('canViewModule')) {
+    // Helper function to check if user can view module (with fallback)
+    function canViewModule($module) {
+        // Use existing canView if available, otherwise return true for admin
+        if (function_exists('canView')) {
+            return canView($module);
+        }
+        // Fallback: allow if user is logged in
+        return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+    }
 }
 ?>
 
