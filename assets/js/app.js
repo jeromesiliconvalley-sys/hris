@@ -2,11 +2,20 @@
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('mainContent');
-    sidebar.classList.toggle('collapsed');
-    mainContent.classList.toggle('expanded');
-    
+    const topNav = document.querySelector('.top-nav');
+
+    const isCollapsed = sidebar.classList.toggle('collapsed');
+    mainContent.classList.toggle('collapsed', isCollapsed);
+    document.body.classList.toggle('sidebar-collapsed', isCollapsed);
+
+    // Update toggle button icon
+    const toggleBtn = sidebar.querySelector('.toggle-btn i');
+    if (toggleBtn) {
+        toggleBtn.className = isCollapsed ? 'bi bi-chevron-right' : 'bi bi-chevron-left';
+    }
+
     // Close all submenus when collapsing
-    if (sidebar.classList.contains('collapsed')) {
+    if (isCollapsed) {
         document.querySelectorAll('.submenu').forEach(submenu => {
             submenu.classList.remove('show');
         });
@@ -14,7 +23,29 @@ function toggleSidebar() {
             link.setAttribute('aria-expanded', 'false');
         });
     }
+
+    // Save preference to localStorage
+    localStorage.setItem('sidebarCollapsed', isCollapsed);
 }
+
+// Initialize sidebar state from localStorage
+document.addEventListener('DOMContentLoaded', function() {
+    const savedState = localStorage.getItem('sidebarCollapsed');
+    if (savedState === 'true') {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        if (sidebar && mainContent) {
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('collapsed');
+            document.body.classList.add('sidebar-collapsed');
+
+            const toggleBtn = sidebar.querySelector('.toggle-btn i');
+            if (toggleBtn) {
+                toggleBtn.className = 'bi bi-chevron-right';
+            }
+        }
+    }
+});
 
 // Multi-level Menu Toggle
 function toggleSubmenu(event, element) {

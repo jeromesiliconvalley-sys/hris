@@ -25,7 +25,7 @@ header("Referrer-Policy: strict-origin-when-cross-origin");
 $csp = "default-src 'self'; ";
 $csp .= "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; ";
 $csp .= "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; ";
-$csp .= "font-src 'self' https://cdn.jsdelivr.net; ";
+$csp .= "font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; ";
 $csp .= "img-src 'self' data: https:; ";
 $csp .= "connect-src 'self' https://cdn.jsdelivr.net; ";  // Allow CDN for source maps
 $csp .= "frame-src 'self' https://www.google.com; ";  // Allow Google Maps embeds
